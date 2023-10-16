@@ -38,10 +38,8 @@ int _printf(const char *format, ...)
 				case '\0':
 					break;
 				default:
-					if (*(format + 1) == '%')
-						_putchar('%');
 					_putchar(*format);
-					num_of_chars += 1;
+					num_of_chars += 2;
 					break;
 			}
 		}
