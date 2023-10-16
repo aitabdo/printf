@@ -9,6 +9,7 @@
 
 int print_str(char *str);
 int _putchar(char c);
+int _printf(const char *format, ...);
 
 /**
  * print_str - A function that prints a string
