@@ -13,7 +13,7 @@ int print_int(unsigned int a)
 
 	while (pow > 0)
 	{
-		printed_elemnts += _putchar('0' + a / pow);
+		printed_elements += _putchar(a / pow + '0');
 		a %= pow;
 		pow /= 10;
 	}
