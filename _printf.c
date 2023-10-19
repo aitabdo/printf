@@ -21,6 +21,10 @@ int _printf(const char *format, ...)
 		else
 		{
 			i++;
+			if (!format[i])
+			{
+				return (-1);
+			}
 			if (format[i] == 's')
 			{
 				printed_elements += print_string(va_arg(args, char *));
