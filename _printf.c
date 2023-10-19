@@ -16,7 +16,7 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			printed_elements += print_char(format[i]);
+			printed_elements += _putchar(format[i]);
 		}
 		else
 		{
@@ -25,13 +25,9 @@ int _printf(const char *format, ...)
 			{
 				printed_elements += print_string(va_arg(args, char *));
 			}
-			else if (format[i] == '\0')
-			{
-				return (-1);
-			}
 			else if (format[i] == 'c')
 			{
-				printed_elements += print_char(va_arg(args, int));
+				printed_elements += _putchar(va_arg(args, int));
 			}
 			else if (format[i] == 'i')
 			{
@@ -43,7 +39,7 @@ int _printf(const char *format, ...)
 			}
 			else
 			{
-				printed_elements += print_char(format[i]);
+				printed_elements += _putchar(format[i]);
 			}
 		}
 	}
