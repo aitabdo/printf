@@ -6,45 +6,44 @@
  */
 int _printf(const char *format, ...)
 {
-	int num_of_chars = 0;
-	va_list arguments;
+	int printed_elements = 0, i;
+	va_list args;
 
-	if (format == NULL)
+	if (!format || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
-	va_start(arguments, format);
-	while (*format)
+	va_start(args, format);
+	for (i = 0 ; format[i] ; i++)
 	{
-		if (*format != '%')
+		if (format[i] != '%')
 		{
-			_putchar(*format);
-			num_of_chars++;
+			printed_elements += print_char(format[i]);
 		}
 		else
 		{
-			format++;
-			switch (*format)
+			i++;
+			if (format[i] == 's')
 			{
-				case 'c':
-					_putchar(va_arg(arguments, int));
-					num_of_chars++;
-					break;
-				case 's':
-					num_of_chars += print_str(va_arg(arguments, char *));
-					break;
-				case '%':
-					_putchar('%');
-					num_of_chars++;
-					break;
-				case '\0':
-					break;
-				default:
-					_putchar(*format);
-					num_of_chars += 2;
-					break;
+				printed_elements += print_string(va_arg(args, char *));
+			}
+			else if (format[i] == 'c')
+			{
+				printed_elements += print_char(va_arg(args, int));
+			}
+			else if (format[i] == 'i')
+			{
+				printed_elements += print_int(va_arg(args, unsigned int));
+			}
+			else if (format[i] == '%')
+			{
+				printed_elements += print_char('%');
+			}
+			else
+			{
+				printed_elements += print_char(format[i]);
+				continue;
 			}
 		}
-		format++;
 	}
-	va_end(arguments);
-	return (num_of_chars);
+	va_end(args);
+	return (printed_elements);
 }
