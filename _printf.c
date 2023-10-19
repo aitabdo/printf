@@ -40,7 +40,6 @@ int _printf(const char *format, ...)
 			else
 			{
 				printed_elements += print_char(format[i]);
-				continue;
 			}
 		}
 	}
