@@ -9,7 +9,7 @@ int print_string(char *str)
 	unsigned long int i = 0;
 
 	if (str == NULL)
-		str = "(null)";
+		return (-1);
 	while (str[i])
 	{
 		_putchar(str[i]);
