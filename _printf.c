@@ -1,48 +1,82 @@
 #include "main.h"
+
 /**
- * _printf - A function that prints formats to stdout.
- * @format: string that containes our formats.
- * Return: int (number of characters been printed to stdout.)
+ * _printf - function that prints anything.
+ * @format: list of arguments passed to the function.
+ * Return: int (number of chars printed).
  */
 int _printf(const char *format, ...)
 {
-	int printed_elements = 0, i;
+	int num_char_printed = 0;
+	form_spec specifiers[] = {
+		{"s", print_str},
+		{"c", print_char},
+		{"%", print_percent},
+		{"d", print_int},
+		{"i", print_int},
+		{"b", print_bin},
+		{"r", print_rev},
+		{"R", print_rot13},
+		{"S", print_STR},
+		{"p", print_addr},
+		{"o", print_oct},
+		{"u", print_unsigned},
+		{"X", print_HEX},
+		{"x", print_hex},
+		{NULL, NULL}
+	};
 	va_list args;
 
-	if (!format || (format[0] == '%' && format[1] == '\0'))
+	if (!format)
 		return (-1);
+
 	va_start(args, format);
-	for (i = 0 ; format[i] ; i++)
+	num_char_printed = _print(format, specifiers, args);
+	va_end(args);
+
+	return (num_char_printed);
+}
+/**
+ * _print - prints anything.
+ * @format: list of arguments passed to the function.
+ * @specifiers: list of our specifiers.
+ * @args: list of arguments
+ * Return: int (number of chars printed).
+ */
+int _print(const char *format, form_spec specifiers[], va_list args)
+{
+	int num_char_printed = 0, i = 0, j;
+	int k;
+
+	while (format[i])
 	{
-		if (format[i] != '%')
+		if (format[i] == '%')
 		{
-			printed_elements += _putchar(format[i]);
+			i++;
+			if (format[i] == '\0')
+				return (-1);
+			for (j = 0; specifiers[j].c != NULL; j++)
+			{
+				if (format[i] == specifiers[j].c[0])
+				{
+					k = specifiers[j].f(args);
+					if (k == -1)
+						return (-1);
+					num_char_printed += k;
+					break;
+				}
+			}
+			if (specifiers[j].c == NULL)
+			{
+				num_char_printed += print_percent(args);
+				num_char_printed += _putchar(format[i]);
+			}
 		}
 		else
 		{
-			i++;
-			if (format[i] == 's')
-			{
-				printed_elements += print_string(va_arg(args, char *));
-			}
-			else if (format[i] == 'c')
-			{
-				printed_elements += _putchar(va_arg(args, int));
-			}
-			else if (format[i] == 'i')
-			{
-				printed_elements += print_int(va_arg(args, unsigned int));
-			}
-			else if (format[i] == '%')
-			{
-				printed_elements += print_char('%');
-			}
-			else
-			{
-				printed_elements += _putchar(format[i]);
-			}
+			num_char_printed += _putchar(format[i]);
 		}
+		i++;
 	}
-	va_end(args);
-	return (printed_elements);
+	return (num_char_printed);
 }
